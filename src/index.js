@@ -149,7 +149,7 @@ function initGlobe() {
   Globe.rotateZ(0.5);
   Globe.rotateX(-0.6);
   const globeMaterial = Globe.globeMaterial();
-  globeMaterial.color = new Color(0x585b59);
+  globeMaterial.color = new Color(0x1B1E1B);
   globeMaterial.emissive = new Color(0x220038);
   globeMaterial.emissiveIntensity = 0.1;
   globeMaterial.shininess = 0.7;
