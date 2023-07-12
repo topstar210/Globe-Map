@@ -32,16 +32,17 @@ animate();
 // SECTION Initializing core ThreeJS elements
 function init() {
   // Initialize renderer
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor( 0xffffff, 0);
   // renderer.outputEncoding = THREE.sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
   // Initialize scene, light
   scene = new Scene();
   scene.add(new AmbientLight(0xbbbbbb, 0.3));
-  scene.background = new Color(0x040d21);
+  // scene.background = new Color(0x040d21);
 
   // Initialize camera, light
   camera = new PerspectiveCamera();
@@ -53,7 +54,7 @@ function init() {
   camera.add(dLight);
 
   var dLight1 = new DirectionalLight(0x7982f6, 1);
-  dLight1.position.set(-200, 500, 200);
+  dLight1.position.set(200, 500, 200);
   camera.add(dLight1);
 
   var dLight2 = new PointLight(0x8566cc, 0.5);
@@ -68,14 +69,6 @@ function init() {
 
   // Additional effects
   scene.fog = new Fog(0x535ef3, 400, 2000);
-
-  // Helpers
-  // const axesHelper = new AxesHelper(800);
-  // scene.add(axesHelper);
-  // var helper = new DirectionalLightHelper(dLight);
-  // scene.add(helper);
-  // var helperCamera = new CameraHelper(dLight.shadow.camera);
-  // scene.add(helperCamera);
 
   // Initialize controls
   controls = new OrbitControls(camera, renderer.domElement);
@@ -106,23 +99,23 @@ function initGlobe() {
     .hexPolygonResolution(3)
     .hexPolygonMargin(0.7)
     .showAtmosphere(true)
-    .atmosphereColor("#3a228a")
+    .atmosphereColor("#585b59")
     .atmosphereAltitude(0.25)
     .hexPolygonColor((e) => {
       if (
-        ["KGZ", "KOR", "THA", "RUS", "UZB", "IDN", "KAZ", "MYS"].includes(
+        ["USA"].includes(
           e.properties.ISO_A3
         )
       ) {
         return "rgba(255,255,255, 1)";
-      } else return "rgba(255,255,255, 0.7)";
+      } else return "rgba(255,255,255, 0.6)";
     });
 
   // NOTE Arc animations are followed after the globe enters the scene
   setTimeout(() => {
     Globe.arcsData(travelHistory.flights)
       .arcColor((e) => {
-        return e.status ? "#9cff00" : "#FF4000";
+        return e.status ? "#9cff00" : "#99d633";
       })
       .arcAltitude((e) => {
         return e.arcAlt;
@@ -152,10 +145,11 @@ function initGlobe() {
       .pointRadius(0.05);
   }, 1000);
 
-  Globe.rotateY(-Math.PI * (5 / 9));
-  Globe.rotateZ(-Math.PI / 6);
+  Globe.rotateY(-4);
+  Globe.rotateZ(0.5);
+  Globe.rotateX(-0.6);
   const globeMaterial = Globe.globeMaterial();
-  globeMaterial.color = new Color(0x3a228a);
+  globeMaterial.color = new Color(0x585b59);
   globeMaterial.emissive = new Color(0x220038);
   globeMaterial.emissiveIntensity = 0.1;
   globeMaterial.shininess = 0.7;
@@ -181,12 +175,12 @@ function onWindowResize() {
 }
 
 function animate() {
-  camera.position.x +=
-    Math.abs(mouseX) <= windowHalfX / 2
-      ? (mouseX / 2 - camera.position.x) * 0.005
-      : 0;
-  camera.position.y += (-mouseY / 2 - camera.position.y) * 0.005;
-  camera.lookAt(scene.position);
+  // camera.position.x +=
+  //   Math.abs(mouseX) <= windowHalfX / 2
+  //     ? (mouseX / 2 - camera.position.x) * 0.005
+  //     : 0;
+  // camera.position.y += (-mouseY / 2 - camera.position.y) * 0.005;
+  // camera.lookAt(scene.position);
   controls.update();
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
